@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.6, created on 2016-11-03 16:45:39
+<?php /* Smarty version Smarty-3.1.6, created on 2016-11-03 19:25:59
          compiled from "./Application/Admin/View\Goods\showList.html" */ ?>
 <?php /*%%SmartyHeaderCode:2795581ac67ec1fdc9-36790995%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '0f8b93ec3f7660651a7ba6558b40c700ab224642' => 
     array (
       0 => './Application/Admin/View\\Goods\\showList.html',
-      1 => 1478162439,
+      1 => 1478172358,
       2 => 'file',
     ),
   ),
@@ -95,8 +95,12 @@ $_smarty_tpl->tpl_vars['v']->_loop = true;
 </td>
             <td><?php echo $_smarty_tpl->tpl_vars['v']->value['goods_price'];?>
 </td>
-            <td><img src="<<?php ?>?php echo ADMIN_IMAGE_URL;?<?php ?>>20121018-174034-58977.jpg" height="60" width="60"></td>
-            <td><img src="<<?php ?>?php echo ADMIN_IMAGE_URL;?<?php ?>>20121018-174034-97960.jpg" height="40" width="40"></td>
+            <td><img src="<?php echo @SITE_URL;?>
+<?php echo $_smarty_tpl->tpl_vars['v']->value['goods_big_img'];?>
+" height="60" width="60"></td>
+            <td><img src="<?php echo @SITE_URL;?>
+<?php echo $_smarty_tpl->tpl_vars['v']->value['goods_small_img'];?>
+" height="40" width="40"></td>
             <td><?php echo $_smarty_tpl->tpl_vars['v']->value['goods_brand_id'];?>
 </td>
             <td><?php echo smarty_modifier_date_format($_smarty_tpl->tpl_vars['v']->value['goods_create_time'],"%Y-%m-%d %T");?>

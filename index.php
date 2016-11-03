@@ -27,6 +27,8 @@ define('CSS_URL', '/sell/Application/Home/Public/css/');
 define('IMAGE_URL', '/sell/Application/Home/Public/images/');
 define('JS_URL', '/sell/Application/Home/Public/js/');
 
+//给静态资源文件设置访问常量路径
+define('SITE_URL',"http://127.0.0.1/sell/");
 // admin模块url
 define('ADMIN_CSS_URL', '/sell/Application/Admin/Public/css/');
 define('ADMIN_IMAGE_URL', '/sell/Application/Admin/Public/img/');

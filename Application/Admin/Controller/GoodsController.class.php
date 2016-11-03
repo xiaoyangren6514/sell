@@ -33,24 +33,45 @@ class GoodsController extends Controller
             if ($fileErrorNo == 0) {
                 // 初始化上传配置信息
                 $config = array(
-                    'exts' => array(), //允许上传的文件后缀
+                    'exts' => array('jpg', 'jpeg', 'png', 'bmp'), //允许上传的文件后缀
                     'rootPath' => './Uploads/', //保存根路径
                 );
                 $up = new Upload($config);
-                dump($up);
                 // uploadOne方法会返回上传附件存储在服务器的 名字 路径等信息
+                /**
+                 * array (size=9)
+                 * 'name' => string 'debug.log' (length=9)
+                 * 'type' => string 'application/octet-stream' (length=24)
+                 * 'size' => int 6123
+                 * 'key' => int 0
+                 * 'ext' => string 'log' (length=3)
+                 * 'md5' => string '88c9f4aba7287131ede4c9f21d64683e' (length=32)
+                 * 'sha1' => string '9369b5f5f40e68ba01146ac07819882c1dec98ad' (length=40)
+                 * 'savename' => string '581b197e70fdf.log' (length=17)
+                 * 'savepath' => string '2016-11-03/' (length=11)
+                 */
                 $z = $up->uploadOne($_FILES['goods_image']);
-                dump($z);
-                // 把上传好的图片保存到数据表中
-                $bigPathName = $up->rootPath . $z['savepath'] . $z['savename'];
-                $_POST['goods_big_img'] = ltrim($bigPathName, './');
-                // 给上传好的图片制作缩略图
-                $im = new Image();
-                $im->open($bigPathName);
-                $im->thumb(125, 125, 6);
-                $smallPathName = $up->rootPath . $z['savepath'] . "small_" . $z['savename'];
-                $im->save($smallPathName);
-                $_POST['goods_small_img'] = ltrim($smallPathName, './');
+                if ($z) {// upload success
+                    // 把上传好的图片保存到数据表中
+                    //  ./Uploads/2016-11-03/581b19ec127ff.log
+                    $bigPathName = $up->rootPath . $z['savepath'] . $z['savename'];
+                    $_POST['goods_big_img'] = ltrim($bigPathName, './');
+                    // 给上传好的图片制作缩略图
+                    $im = new Image();// 实例化image对象
+                    $im->open($bigPathName);// 打开目标文件
+                    $im->thumb(125, 125, 6);// 制作缩略图 默认有自适应效果
+                    $smallPathName = $up->rootPath . $z['savepath'] . "small_" . $z['savename'];
+                    $im->save($smallPathName);// 保存图片到服务器
+                    $_POST['goods_small_img'] = ltrim($smallPathName, './');
+                    $z = $goods->add($_POST);
+                    if ($z) {// add success
+                        $this->redirect('showList', array(), 2, '商品添加成功');
+                    } else {// add fail
+                        $this->redirect('add', array(), 2, '商品添加失败');
+                    }
+                } else {
+                    $this->redirect('add', array(), 1, $up->getError());
+                }
             } else if ($fileErrorNo == 1) {
                 $this->redirect('add', array(), 1, '上传的文件超过了 php.ini 中 upload_max_filesize 选项限制的值');
             } else if ($fileErrorNo == 2) {
@@ -62,12 +83,6 @@ class GoodsController extends Controller
             } else if ($fileErrorNo == 5) {
                 $this->redirect('add', array(), 1, '上传文件大小为0');
             }
-//            $z = $goods->add($_POST);
-//            if ($z) {// add success
-//                $this->redirect('showList', array(), 2, '商品添加成功');
-//            } else {// add fail
-//                $this->redirect('add', array(), 2, '商品添加失败');
-//            }
         } else {
             $this->display();
         }
